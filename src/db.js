@@ -1,7 +1,9 @@
 import { PGlite } from '@electric-sql/pglite';
 
+// Initialize the database
 const db = new PGlite('idb://meditrack');
 
+// Table creation SQL
 const tableSQL = [
   `CREATE TABLE IF NOT EXISTS patients (
     id TEXT PRIMARY KEY,
@@ -37,7 +39,7 @@ const tableSQL = [
   );`
 ];
 
-// To ensure tables exist,
+// Ensure tables exist
 async function init() {
   for (const sql of tableSQL) {
     await db.exec(sql);
@@ -54,21 +56,21 @@ export async function getAllPatients() {
 }
 export async function addPatient(patient) {
   await init();
-  await db.run(
-    'INSERT INTO patients (id, firstName, lastName, email, phone, dob, gender, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+  await db.query(
+    'INSERT INTO patients (id, firstName, lastName, email, phone, dob, gender, address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
     [patient.id, patient.firstName, patient.lastName, patient.email, patient.phone, patient.dob, patient.gender, patient.address]
   );
 }
 export async function updatePatient(patient) {
   await init();
-  await db.run(
-    'UPDATE patients SET firstName=?, lastName=?, email=?, phone=?, dob=?, gender=?, address=? WHERE id=?',
+  await db.query(
+    'UPDATE patients SET firstName=$1, lastName=$2, email=$3, phone=$4, dob=$5, gender=$6, address=$7 WHERE id=$8',
     [patient.firstName, patient.lastName, patient.email, patient.phone, patient.dob, patient.gender, patient.address, patient.id]
   );
 }
 export async function deletePatient(id) {
   await init();
-  await db.run('DELETE FROM patients WHERE id=?', [id]);
+  await db.query('DELETE FROM patients WHERE id=$1', [id]);
 }
 
 // Doctors
@@ -79,21 +81,21 @@ export async function getAllDoctors() {
 }
 export async function addDoctor(doctor) {
   await init();
-  await db.run(
-    'INSERT INTO doctors (id, firstName, lastName, specialty, email, phone) VALUES (?, ?, ?, ?, ?, ?)',
+  await db.query(
+    'INSERT INTO doctors (id, firstName, lastName, specialty, email, phone) VALUES ($1, $2, $3, $4, $5, $6)',
     [doctor.id, doctor.firstName, doctor.lastName, doctor.specialty, doctor.email, doctor.phone]
   );
 }
 export async function updateDoctor(doctor) {
   await init();
-  await db.run(
-    'UPDATE doctors SET firstName=?, lastName=?, specialty=?, email=?, phone=? WHERE id=?',
+  await db.query(
+    'UPDATE doctors SET firstName=$1, lastName=$2, specialty=$3, email=$4, phone=$5 WHERE id=$6',
     [doctor.firstName, doctor.lastName, doctor.specialty, doctor.email, doctor.phone, doctor.id]
   );
 }
 export async function deleteDoctor(id) {
   await init();
-  await db.run('DELETE FROM doctors WHERE id=?', [id]);
+  await db.query('DELETE FROM doctors WHERE id=$1', [id]);
 }
 
 // Appointments
@@ -104,21 +106,21 @@ export async function getAllAppointments() {
 }
 export async function addAppointment(appointment) {
   await init();
-  await db.run(
-    'INSERT INTO appointments (id, patientId, doctorId, date, time, type, notes) VALUES (?, ?, ?, ?, ?, ?, ?)',
+  await db.query(
+    'INSERT INTO appointments (id, patientId, doctorId, date, time, type, notes) VALUES ($1, $2, $3, $4, $5, $6, $7)',
     [appointment.id, appointment.patientId, appointment.doctorId, appointment.date, appointment.time, appointment.type, appointment.notes]
   );
 }
 export async function updateAppointment(appointment) {
   await init();
-  await db.run(
-    'UPDATE appointments SET patientId=?, doctorId=?, date=?, time=?, type=?, notes=? WHERE id=?',
+  await db.query(
+    'UPDATE appointments SET patientId=$1, doctorId=$2, date=$3, time=$4, type=$5, notes=$6 WHERE id=$7',
     [appointment.patientId, appointment.doctorId, appointment.date, appointment.time, appointment.type, appointment.notes, appointment.id]
   );
 }
 export async function deleteAppointment(id) {
   await init();
-  await db.run('DELETE FROM appointments WHERE id=?', [id]);
+  await db.query('DELETE FROM appointments WHERE id=$1', [id]);
 }
 
 // Admins
@@ -129,19 +131,19 @@ export async function getAllAdmins() {
 }
 export async function addAdmin(admin) {
   await init();
-  await db.run(
-    'INSERT INTO admins (email, password, name) VALUES (?, ?, ?)',
+  await db.query(
+    'INSERT INTO admins (email, password, name) VALUES ($1, $2, $3)',
     [admin.email, admin.password, admin.name]
   );
 }
 export async function updateAdmin(admin) {
   await init();
-  await db.run(
-    'UPDATE admins SET password=?, name=? WHERE email=?',
+  await db.query(
+    'UPDATE admins SET password=$1, name=$2 WHERE email=$3',
     [admin.password, admin.name, admin.email]
   );
 }
 export async function deleteAdmin(email) {
   await init();
-  await db.run('DELETE FROM admins WHERE email=?', [email]);
+  await db.query('DELETE FROM admins WHERE email=$1', [email]);
 } 
