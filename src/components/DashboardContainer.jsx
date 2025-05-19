@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import PatientsTabContent from './PatientsTabContent';
 import AddPatientModal from './AddPatientModal';
+import ViewPatientModal from './ViewPatientModal';
 
 export default function DashboardContainer({ currentAdmin, setCurrentAdmin, patients, setPatients, doctors, setDoctors, appointments, setAppointments }) {
   const [activeTab, setActiveTab] = useState('doctors');
   const [addPatientOpen, setAddPatientOpen] = useState(false);
+  const [viewPatientOpen, setViewPatientOpen] = useState(false);
+  const [selectedPatient, setSelectedPatient] = useState(null);
 
   // Generate next patient ID (P001, P002, ...)
   function getNextPatientId() {
@@ -21,6 +24,16 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
       { ...data, id: getNextPatientId() },
     ]);
     setAddPatientOpen(false);
+  }
+
+  function handleViewPatient(patient) {
+    setSelectedPatient(patient);
+    setViewPatientOpen(true);
+  }
+
+  function handleCloseViewPatient() {
+    setViewPatientOpen(false);
+    setSelectedPatient(null);
   }
 
   return (
@@ -165,12 +178,17 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
               <PatientsTabContent
                 patients={patients}
                 onAddPatient={() => setAddPatientOpen(true)}
-                onViewPatient={() => {}}
+                onViewPatient={handleViewPatient}
               />
               <AddPatientModal
                 open={addPatientOpen}
                 onClose={() => setAddPatientOpen(false)}
                 onSave={handleAddPatient}
+              />
+              <ViewPatientModal
+                open={viewPatientOpen}
+                patient={selectedPatient}
+                onClose={handleCloseViewPatient}
               />
             </div>
           )}
