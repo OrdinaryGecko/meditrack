@@ -1,0 +1,60 @@
+function getPatientName(patients, id) {
+  const p = patients.find(p => p.id === id);
+  return p ? `${p.firstName} ${p.lastName}` : 'Unknown Patient';
+}
+function getDoctorName(doctors, id) {
+  const d = doctors.find(d => d.id === id);
+  return d ? `Dr. ${d.firstName} ${d.lastName} (${d.specialty})` : 'Unknown Doctor';
+}
+function formatDate(date) {
+  if (!date) return '';
+  return new Date(date).toLocaleDateString();
+}
+function formatTime(time) {
+  if (!time) return '';
+  return time.length === 5 ? time : time.slice(0, 5);
+}
+
+export default function ViewAppointmentModal({ open, appointment, patients, doctors, onClose }) {
+  if (!open || !appointment) return null;
+
+  return (
+    <div className="modal fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 overflow-hidden">
+        <div className="px-6 py-4 bg-green-600 flex justify-between items-center">
+          <h3 className="text-lg font-medium text-white">Appointment Details</h3>
+          <button className="cancel-modal text-white hover:text-gray-200 focus:outline-none" onClick={onClose}>
+            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div className="p-6">
+          <div className="mb-6">
+            <h4 className="text-xl font-medium text-gray-900">{appointment.type?.charAt(0).toUpperCase() + appointment.type?.slice(1)}</h4>
+            <p className="text-sm text-gray-500">{formatDate(appointment.date)} at {formatTime(appointment.time)}</p>
+          </div>
+          <div className="grid grid-cols-1 gap-4">
+            <div>
+              <p className="text-sm font-medium text-gray-500">Patient</p>
+              <p className="mt-1">{getPatientName(patients, appointment.patientId)}</p>
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-500">Doctor</p>
+              <p className="mt-1">{getDoctorName(doctors, appointment.doctorId)}</p>
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-500">Notes</p>
+              <p className="mt-1">{appointment.notes || 'No notes'}</p>
+            </div>
+          </div>
+          <div className="mt-6 flex justify-end space-x-3">
+            <button className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onClick={onClose}>
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+} 
