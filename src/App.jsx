@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import AuthContainer from './components/AuthContainer'
+import DashboardContainer from './components/DashboardContainer'
 
 function App() {
   const [admins, setAdmins] = useState([
@@ -12,11 +13,24 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
-      <AuthContainer
-        admins={admins}
-        setAdmins={setAdmins}
-        setCurrentAdmin={setCurrentAdmin}
-      />
+      {!currentAdmin ? (
+        <AuthContainer
+          admins={admins}
+          setAdmins={setAdmins}
+          setCurrentAdmin={setCurrentAdmin}
+        />
+      ) : (
+        <DashboardContainer
+          currentAdmin={currentAdmin}
+          setCurrentAdmin={setCurrentAdmin}
+          patients={patients}
+          setPatients={setPatients}
+          doctors={doctors}
+          setDoctors={setDoctors}
+          appointments={appointments}
+          setAppointments={setAppointments}
+        />
+      )}
     </div>
   )
 }
