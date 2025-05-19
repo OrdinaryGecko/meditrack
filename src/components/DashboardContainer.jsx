@@ -1,7 +1,27 @@
 import { useState } from 'react';
+import PatientsTabContent from './PatientsTabContent';
+import AddPatientModal from './AddPatientModal';
 
 export default function DashboardContainer({ currentAdmin, setCurrentAdmin, patients, setPatients, doctors, setDoctors, appointments, setAppointments }) {
   const [activeTab, setActiveTab] = useState('doctors');
+  const [addPatientOpen, setAddPatientOpen] = useState(false);
+
+  // Generate next patient ID (P001, P002, ...)
+  function getNextPatientId() {
+    const max = patients.reduce((acc, p) => {
+      const n = parseInt(p.id?.replace('P', '')) || 0;
+      return n > acc ? n : acc;
+    }, 0);
+    return `P${String(max + 1).padStart(3, '0')}`;
+  }
+
+  function handleAddPatient(data) {
+    setPatients([
+      ...patients,
+      { ...data, id: getNextPatientId() },
+    ]);
+    setAddPatientOpen(false);
+  }
 
   return (
     <div className="dashboard-container min-h-screen bg-gray-50">
@@ -141,13 +161,24 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
         {/* Tab Content */}
         <div>
           {activeTab === 'patients' && (
-            <div className="tab-content active">{/* TODO: */}<div className="text-gray-500">Patients tab content</div></div>
+            <div className="tab-content active">
+              <PatientsTabContent
+                patients={patients}
+                onAddPatient={() => setAddPatientOpen(true)}
+                onViewPatient={() => {}}
+              />
+              <AddPatientModal
+                open={addPatientOpen}
+                onClose={() => setAddPatientOpen(false)}
+                onSave={handleAddPatient}
+              />
+            </div>
           )}
           {activeTab === 'appointments' && (
-            <div className="tab-content active">{/* TODO: */}<div className="text-gray-500">Appointments tab content</div></div>
+            <div className="tab-content active"><div className="text-gray-500">Appointments tab content here</div></div>
           )}
           {activeTab === 'doctors' && (
-            <div className="tab-content active">{/* TODO: */}<div className="text-gray-500">Doctors tab content</div></div>
+            <div className="tab-content active"><div className="text-gray-500">Doctors tab content here</div></div>
           )}
         </div>
       </div>
