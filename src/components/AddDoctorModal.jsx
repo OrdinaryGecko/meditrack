@@ -1,19 +1,19 @@
 import { useState } from 'react';
 
 export default function AddDoctorModal({ open, onClose, onSave }) {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [firstname, setFirstName] = useState('');
+  const [lastname, setLastName] = useState('');
   const [specialty, setSpecialty] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!firstName || !lastName || !specialty || !email || !phone) {
+    if (!firstname || !lastname || !specialty || !email || !phone) {
       alert('Please fill all fields');
       return;
     }
-    onSave({ firstName, lastName, specialty, email, phone });
+    onSave({ firstname, lastname, specialty, email, phone });
     setFirstName(''); setLastName(''); setSpecialty(''); setEmail(''); setPhone('');
   };
 
@@ -29,11 +29,11 @@ export default function AddDoctorModal({ open, onClose, onSave }) {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="col-span-2 sm:col-span-1">
               <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="doctor-first-name">First Name</label>
-              <input type="text" id="doctor-first-name" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500" value={firstName} onChange={e => setFirstName(e.target.value)} required />
+              <input type="text" id="doctor-first-name" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500" value={firstname} onChange={e => setFirstName(e.target.value)} required />
             </div>
             <div className="col-span-2 sm:col-span-1">
               <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="doctor-last-name">Last Name</label>
-              <input type="text" id="doctor-last-name" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500" value={lastName} onChange={e => setLastName(e.target.value)} required />
+              <input type="text" id="doctor-last-name" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500" value={lastname} onChange={e => setLastName(e.target.value)} required />
             </div>
             <div className="col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="doctor-specialty">Specialty</label>
