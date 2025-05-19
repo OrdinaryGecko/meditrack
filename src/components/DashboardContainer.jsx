@@ -2,12 +2,18 @@ import { useState } from 'react';
 import PatientsTabContent from './PatientsTabContent';
 import AddPatientModal from './AddPatientModal';
 import ViewPatientModal from './ViewPatientModal';
+import DoctorsTabContent from './DoctorsTabContent';
+import AddDoctorModal from './AddDoctorModal';
+import ViewDoctorModal from './ViewDoctorModal';
 
 export default function DashboardContainer({ currentAdmin, setCurrentAdmin, patients, setPatients, doctors, setDoctors, appointments, setAppointments }) {
   const [activeTab, setActiveTab] = useState('doctors');
   const [addPatientOpen, setAddPatientOpen] = useState(false);
   const [viewPatientOpen, setViewPatientOpen] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
+  const [addDoctorOpen, setAddDoctorOpen] = useState(false);
+  const [viewDoctorOpen, setViewDoctorOpen] = useState(false);
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
 
   // Generate next patient ID (P001, P002, ...)
   function getNextPatientId() {
@@ -16,6 +22,15 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
       return n > acc ? n : acc;
     }, 0);
     return `P${String(max + 1).padStart(3, '0')}`;
+  }
+
+  // Generate next doctor ID (D001, D002, ...)
+  function getNextDoctorId() {
+    const max = doctors.reduce((acc, d) => {
+      const n = parseInt(d.id?.replace('D', '')) || 0;
+      return n > acc ? n : acc;
+    }, 0);
+    return `D${String(max + 1).padStart(3, '0')}`;
   }
 
   function handleAddPatient(data) {
@@ -34,6 +49,24 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
   function handleCloseViewPatient() {
     setViewPatientOpen(false);
     setSelectedPatient(null);
+  }
+
+  function handleAddDoctor(data) {
+    setDoctors([
+      ...doctors,
+      { ...data, id: getNextDoctorId() },
+    ]);
+    setAddDoctorOpen(false);
+  }
+
+  function handleViewDoctor(doctor) {
+    setSelectedDoctor(doctor);
+    setViewDoctorOpen(true);
+  }
+
+  function handleCloseViewDoctor() {
+    setViewDoctorOpen(false);
+    setSelectedDoctor(null);
   }
 
   return (
@@ -196,7 +229,23 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
             <div className="tab-content active"><div className="text-gray-500">Appointments tab content here</div></div>
           )}
           {activeTab === 'doctors' && (
-            <div className="tab-content active"><div className="text-gray-500">Doctors tab content here</div></div>
+            <div className="tab-content active">
+              <DoctorsTabContent
+                doctors={doctors}
+                onAddDoctor={() => setAddDoctorOpen(true)}
+                onViewDoctor={handleViewDoctor}
+              />
+              <AddDoctorModal
+                open={addDoctorOpen}
+                onClose={() => setAddDoctorOpen(false)}
+                onSave={handleAddDoctor}
+              />
+              <ViewDoctorModal
+                open={viewDoctorOpen}
+                doctor={selectedDoctor}
+                onClose={handleCloseViewDoctor}
+              />
+            </div>
           )}
         </div>
       </div>
