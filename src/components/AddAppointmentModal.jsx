@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 export default function AddAppointmentModal({ open, onClose, onSave, patients, doctors }) {
-  const [patientId, setPatientId] = useState('');
-  const [doctorId, setDoctorId] = useState('');
+  const [patientid, setPatientId] = useState('');
+  const [doctorid, setDoctorId] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [type, setType] = useState('');
@@ -10,11 +10,11 @@ export default function AddAppointmentModal({ open, onClose, onSave, patients, d
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!patientId || !doctorId || !date || !time || !type) {
+    if (!patientid || !doctorid || !date || !time || !type) {
       alert('Please fill all required fields');
       return;
     }
-    onSave({ patientId, doctorId, date, time, type, notes });
+    onSave({ patientid, doctorid, date, time, type, notes });
     setPatientId(''); setDoctorId(''); setDate(''); setTime(''); setType(''); setNotes('');
   };
 
@@ -30,7 +30,7 @@ export default function AddAppointmentModal({ open, onClose, onSave, patients, d
           <div className="grid grid-cols-1 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="appointment-patient">Patient</label>
-              <select id="appointment-patient" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500" value={patientId} onChange={e => setPatientId(e.target.value)} required>
+              <select id="appointment-patient" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500" value={patientid} onChange={e => setPatientId(e.target.value)} required>
                 <option value="">Select Patient</option>
                 {patients.map(p => (
                   <option key={p.id} value={p.id}>{p.firstname} {p.lastname}</option>
@@ -39,7 +39,7 @@ export default function AddAppointmentModal({ open, onClose, onSave, patients, d
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="appointment-doctor">Doctor</label>
-              <select id="appointment-doctor" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500" value={doctorId} onChange={e => setDoctorId(e.target.value)} required>
+              <select id="appointment-doctor" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500" value={doctorid} onChange={e => setDoctorId(e.target.value)} required>
                 <option value="">Select Doctor</option>
                 {doctors.map(d => (
                   <option key={d.id} value={d.id}>Dr. {d.firstname} {d.lastname} ({d.specialty})</option>
