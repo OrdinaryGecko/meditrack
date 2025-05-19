@@ -49,6 +49,13 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
     return `A${String(max + 1).padStart(3, '0')}`;
   }
 
+  function getTodayString() {
+    const today = new Date();
+    return today.toISOString().slice(0, 10);
+  }
+
+  const todaysAppointmentsCount = appointments.filter(a => a.date === getTodayString()).length;
+
   async function handleAddPatient(data) {
     const newPatient = { ...data, id: getNextPatientId() };
     await addPatient(newPatient);
@@ -213,7 +220,7 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
                   <dl>
                     <dt className="text-sm font-medium text-gray-500 truncate">Today's Appointments</dt>
                     <dd>
-                      <div className="text-lg font-medium text-gray-900">0</div>
+                      <div className="text-lg font-medium text-gray-900">{todaysAppointmentsCount}</div>
                     </dd>
                   </dl>
                 </div>
