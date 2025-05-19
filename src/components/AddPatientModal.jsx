@@ -9,7 +9,7 @@ export default function AddPatientModal({ open, onClose, onSave }) {
   const [gender, setGender] = useState('');
   const [address, setAddress] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!firstname || !lastname || !email || !phone || !dob || !gender || !address) {
       alert('Please fill all fields');

@@ -8,6 +8,7 @@ import ViewDoctorModal from './ViewDoctorModal';
 import AppointmentsTabContent from './AppointmentsTabContent';
 import AddAppointmentModal from './AddAppointmentModal';
 import ViewAppointmentModal from './ViewAppointmentModal';
+import { addPatient, addDoctor, addAppointment } from '../db';
 
 export default function DashboardContainer({ currentAdmin, setCurrentAdmin, patients, setPatients, doctors, setDoctors, appointments, setAppointments }) {
   const [activeTab, setActiveTab] = useState('doctors');
@@ -48,10 +49,12 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
     return `A${String(max + 1).padStart(3, '0')}`;
   }
 
-  function handleAddPatient(data) {
+  async function handleAddPatient(data) {
+    const newPatient = { ...data, id: getNextPatientId() };
+    await addPatient(newPatient);
     setPatients([
       ...patients,
-      { ...data, id: getNextPatientId() },
+      newPatient,
     ]);
     setAddPatientOpen(false);
   }
@@ -66,10 +69,12 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
     setSelectedPatient(null);
   }
 
-  function handleAddDoctor(data) {
+  async function handleAddDoctor(data) {
+    const newDoctor = { ...data, id: getNextDoctorId() };
+    await addDoctor(newDoctor);
     setDoctors([
       ...doctors,
-      { ...data, id: getNextDoctorId() },
+      newDoctor,
     ]);
     setAddDoctorOpen(false);
   }
@@ -84,10 +89,12 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
     setSelectedDoctor(null);
   }
 
-  function handleAddAppointment(data) {
+  async function handleAddAppointment(data) {
+    const newAppointment = { ...data, id: getNextAppointmentId() };
+    await addAppointment(newAppointment);
     setAppointments([
       ...appointments,
-      { ...data, id: getNextAppointmentId() },
+      newAppointment,
     ]);
     setAddAppointmentOpen(false);
   }
