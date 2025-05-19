@@ -27,7 +27,7 @@ export default function DoctorsTabContent({ doctors, onAddDoctor, onViewDoctor }
                     </svg>
                   </div>
                   <div className="ml-5 w-0 flex-1">
-                    <h3 className="text-lg font-medium text-gray-900">Dr. {doctor.firstName} {doctor.lastName}</h3>
+                    <h3 className="text-lg font-medium text-gray-900">Dr. {doctor.firstname} {doctor.lastname}</h3>
                     <p className="text-sm text-gray-500">{doctor.specialty}</p>
                   </div>
                 </div>

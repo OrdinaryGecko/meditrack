@@ -14,7 +14,7 @@ export default function ViewDoctorModal({ open, doctor, onClose }) {
         </div>
         <div className="p-6">
           <div className="mb-6">
-            <h4 className="text-xl font-medium text-gray-900">Dr. {doctor.firstName} {doctor.lastName}</h4>
+            <h4 className="text-xl font-medium text-gray-900">Dr. {doctor.firstname} {doctor.lastname}</h4>
             <p className="text-sm text-gray-500">{doctor.specialty}</p>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

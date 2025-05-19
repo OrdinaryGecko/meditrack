@@ -1,10 +1,10 @@
 function getPatientName(patients, id) {
   const p = patients.find(p => p.id === id);
-  return p ? `${p.firstName} ${p.lastName}` : 'Unknown Patient';
+  return p ? `${p.firstname} ${p.lastname}` : 'Unknown Patient';
 }
 function getDoctorName(doctors, id) {
   const d = doctors.find(d => d.id === id);
-  return d ? `Dr. ${d.firstName} ${d.lastName} (${d.specialty})` : 'Unknown Doctor';
+  return d ? `Dr. ${d.firstname} ${d.lastname} (${d.specialty})` : 'Unknown Doctor';
 }
 function formatDate(date) {
   if (!date) return '';
@@ -37,11 +37,11 @@ export default function ViewAppointmentModal({ open, appointment, patients, doct
           <div className="grid grid-cols-1 gap-4">
             <div>
               <p className="text-sm font-medium text-gray-500">Patient</p>
-              <p className="mt-1">{getPatientName(patients, appointment.patientId)}</p>
+              <p className="mt-1">{getPatientName(patients, appointment.patientid)}</p>
             </div>
             <div>
               <p className="text-sm font-medium text-gray-500">Doctor</p>
-              <p className="mt-1">{getDoctorName(doctors, appointment.doctorId)}</p>
+              <p className="mt-1">{getDoctorName(doctors, appointment.doctorid)}</p>
             </div>
             <div>
               <p className="text-sm font-medium text-gray-500">Notes</p>

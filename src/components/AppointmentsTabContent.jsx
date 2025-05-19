@@ -1,10 +1,10 @@
 function getPatientName(patients, id) {
   const p = patients.find(p => p.id === id);
-  return p ? `${p.firstName} ${p.lastName}` : 'Unknown Patient';
+  return p ? `${p.firstname} ${p.lastname}` : 'Unknown Patient';
 }
 function getDoctorName(doctors, id) {
   const d = doctors.find(d => d.id === id);
-  return d ? `Dr. ${d.firstName} ${d.lastName}` : 'Unknown Doctor';
+  return d ? `Dr. ${d.firstname} ${d.lastname}` : 'Unknown Doctor';
 }
 function formatDate(date) {
   if (!date) return '';
@@ -36,8 +36,8 @@ export default function AppointmentsTabContent({ appointments, patients, doctors
             <li className="px-6 py-4 text-center text-gray-500">No appointments scheduled. Create a new appointment to get started.</li>
           ) : (
             appointments.map(appointment => {
-              const patient = getPatientName(patients, appointment.patientId);
-              const doctor = getDoctorName(doctors, appointment.doctorId);
+              const patient = getPatientName(patients, appointment.patientid);
+              const doctor = getDoctorName(doctors, appointment.doctorid);
               return (
                 <li key={appointment.id} className="px-6 py-4 hover:bg-gray-50">
                   <div className="flex items-center justify-between">

@@ -33,7 +33,7 @@ export default function AddAppointmentModal({ open, onClose, onSave, patients, d
               <select id="appointment-patient" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500" value={patientId} onChange={e => setPatientId(e.target.value)} required>
                 <option value="">Select Patient</option>
                 {patients.map(p => (
-                  <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>
+                  <option key={p.id} value={p.id}>{p.firstname} {p.lastname}</option>
                 ))}
               </select>
             </div>
@@ -42,7 +42,7 @@ export default function AddAppointmentModal({ open, onClose, onSave, patients, d
               <select id="appointment-doctor" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500" value={doctorId} onChange={e => setDoctorId(e.target.value)} required>
                 <option value="">Select Doctor</option>
                 {doctors.map(d => (
-                  <option key={d.id} value={d.id}>Dr. {d.firstName} {d.lastName} ({d.specialty})</option>
+                  <option key={d.id} value={d.id}>Dr. {d.firstname} {d.lastname} ({d.specialty})</option>
                 ))}
               </select>
             </div>

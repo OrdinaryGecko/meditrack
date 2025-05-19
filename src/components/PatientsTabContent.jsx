@@ -22,7 +22,7 @@ export default function PatientsTabContent({ patients, onAddPatient, onViewPatie
               <li key={patient.id} className="px-6 py-4 hover:bg-gray-50">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-sm font-medium text-gray-900">{patient.firstName} {patient.lastName}</h3>
+                    <h3 className="text-sm font-medium text-gray-900">{patient.firstname} {patient.lastname}</h3>
                     <p className="text-sm text-gray-500">{patient.email}</p>
                   </div>
                   <button

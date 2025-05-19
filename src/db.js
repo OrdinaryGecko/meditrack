@@ -7,8 +7,8 @@ const db = new PGlite('idb://meditrack');
 const tableSQL = [
   `CREATE TABLE IF NOT EXISTS patients (
     id TEXT PRIMARY KEY,
-    firstName TEXT,
-    lastName TEXT,
+    firstname TEXT,
+    lastname TEXT,
     email TEXT,
     phone TEXT,
     dob TEXT,
@@ -17,16 +17,16 @@ const tableSQL = [
   );`,
   `CREATE TABLE IF NOT EXISTS doctors (
     id TEXT PRIMARY KEY,
-    firstName TEXT,
-    lastName TEXT,
+    firstname TEXT,
+    lastname TEXT,
     specialty TEXT,
     email TEXT,
     phone TEXT
   );`,
   `CREATE TABLE IF NOT EXISTS appointments (
     id TEXT PRIMARY KEY,
-    patientId TEXT,
-    doctorId TEXT,
+    patientid TEXT,
+    doctorid TEXT,
     date TEXT,
     time TEXT,
     type TEXT,
@@ -57,15 +57,15 @@ export async function getAllPatients() {
 export async function addPatient(patient) {
   await init();
   await db.query(
-    'INSERT INTO patients (id, firstName, lastName, email, phone, dob, gender, address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
-    [patient.id, patient.firstName, patient.lastName, patient.email, patient.phone, patient.dob, patient.gender, patient.address]
+    'INSERT INTO patients (id, firstname, lastname, email, phone, dob, gender, address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+    [patient.id, patient.firstname, patient.lastname, patient.email, patient.phone, patient.dob, patient.gender, patient.address]
   );
 }
 export async function updatePatient(patient) {
   await init();
   await db.query(
-    'UPDATE patients SET firstName=$1, lastName=$2, email=$3, phone=$4, dob=$5, gender=$6, address=$7 WHERE id=$8',
-    [patient.firstName, patient.lastName, patient.email, patient.phone, patient.dob, patient.gender, patient.address, patient.id]
+    'UPDATE patients SET firstname=$1, lastname=$2, email=$3, phone=$4, dob=$5, gender=$6, address=$7 WHERE id=$8',
+    [patient.firstname, patient.lastname, patient.email, patient.phone, patient.dob, patient.gender, patient.address, patient.id]
   );
 }
 export async function deletePatient(id) {
@@ -82,15 +82,15 @@ export async function getAllDoctors() {
 export async function addDoctor(doctor) {
   await init();
   await db.query(
-    'INSERT INTO doctors (id, firstName, lastName, specialty, email, phone) VALUES ($1, $2, $3, $4, $5, $6)',
-    [doctor.id, doctor.firstName, doctor.lastName, doctor.specialty, doctor.email, doctor.phone]
+    'INSERT INTO doctors (id, firstname, lastname, specialty, email, phone) VALUES ($1, $2, $3, $4, $5, $6)',
+    [doctor.id, doctor.firstname, doctor.lastname, doctor.specialty, doctor.email, doctor.phone]
   );
 }
 export async function updateDoctor(doctor) {
   await init();
   await db.query(
-    'UPDATE doctors SET firstName=$1, lastName=$2, specialty=$3, email=$4, phone=$5 WHERE id=$6',
-    [doctor.firstName, doctor.lastName, doctor.specialty, doctor.email, doctor.phone, doctor.id]
+    'UPDATE doctors SET firstname=$1, lastname=$2, specialty=$3, email=$4, phone=$5 WHERE id=$6',
+    [doctor.firstname, doctor.lastname, doctor.specialty, doctor.email, doctor.phone, doctor.id]
   );
 }
 export async function deleteDoctor(id) {
@@ -107,15 +107,15 @@ export async function getAllAppointments() {
 export async function addAppointment(appointment) {
   await init();
   await db.query(
-    'INSERT INTO appointments (id, patientId, doctorId, date, time, type, notes) VALUES ($1, $2, $3, $4, $5, $6, $7)',
-    [appointment.id, appointment.patientId, appointment.doctorId, appointment.date, appointment.time, appointment.type, appointment.notes]
+    'INSERT INTO appointments (id, patientid, doctorid, date, time, type, notes) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+    [appointment.id, appointment.patientid, appointment.doctorid, appointment.date, appointment.time, appointment.type, appointment.notes]
   );
 }
 export async function updateAppointment(appointment) {
   await init();
   await db.query(
-    'UPDATE appointments SET patientId=$1, doctorId=$2, date=$3, time=$4, type=$5, notes=$6 WHERE id=$7',
-    [appointment.patientId, appointment.doctorId, appointment.date, appointment.time, appointment.type, appointment.notes, appointment.id]
+    'UPDATE appointments SET patientid=$1, doctorid=$2, date=$3, time=$4, type=$5, notes=$6 WHERE id=$7',
+    [appointment.patientid, appointment.doctorid, appointment.date, appointment.time, appointment.type, appointment.notes, appointment.id]
   );
 }
 export async function deleteAppointment(id) {

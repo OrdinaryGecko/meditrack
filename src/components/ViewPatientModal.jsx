@@ -14,7 +14,7 @@ export default function ViewPatientModal({ open, patient, onClose }) {
         </div>
         <div className="p-6">
           <div className="mb-6">
-            <h4 className="text-xl font-medium text-gray-900">{patient.firstName} {patient.lastName}</h4>
+            <h4 className="text-xl font-medium text-gray-900">{patient.firstname} {patient.lastname}</h4>
             <p className="text-sm text-gray-500">Patient ID: {patient.id}</p>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -39,7 +39,6 @@ export default function ViewPatientModal({ open, patient, onClose }) {
               <p className="mt-1">{patient.address}</p>
             </div>
           </div>
-          {/* Recent appointments can be added here in future */}
           <div className="mt-6 flex justify-end space-x-3">
             <button className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onClick={onClose}>
               Close
