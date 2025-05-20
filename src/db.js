@@ -54,7 +54,7 @@ async function init() {
 // Patients
 export async function getAllPatients() {
   await init();
-  const { rows } = await db.query('SELECT * FROM patients');
+  const { rows } = await db.query('SELECT * FROM patients ORDER BY firstname || lastname');
   return rows;
 }
 export async function addPatient(patient) {
@@ -79,7 +79,7 @@ export async function deletePatient(id) {
 // Doctors
 export async function getAllDoctors() {
   await init();
-  const { rows } = await db.query('SELECT * FROM doctors');
+  const { rows } = await db.query('SELECT * FROM doctors ORDER BY firstname || lastname');
   return rows;
 }
 export async function addDoctor(doctor) {
@@ -104,7 +104,7 @@ export async function deleteDoctor(id) {
 // Appointments
 export async function getAllAppointments() {
   await init();
-  const { rows } = await db.query('SELECT * FROM appointments');
+  const { rows } = await db.query('SELECT * FROM appointments ORDER BY date');
   return rows;
 }
 export async function addAppointment(appointment) {
