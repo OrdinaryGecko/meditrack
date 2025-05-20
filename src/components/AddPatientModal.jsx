@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function AddPatientModal({ open, onClose, onSave }) {
+export default function AddPatientModal({ open, onClose, onSave, initialValues = {}, mode = 'add' }) {
   const [firstname, setFirstName] = useState('');
   const [lastname, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -9,14 +9,28 @@ export default function AddPatientModal({ open, onClose, onSave }) {
   const [gender, setGender] = useState('');
   const [address, setAddress] = useState('');
 
+  useEffect(() => {
+    if (open) {
+      setFirstName(initialValues.firstname || '');
+      setLastName(initialValues.lastname || '');
+      setEmail(initialValues.email || '');
+      setPhone(initialValues.phone || '');
+      setDob(initialValues.dob || '');
+      setGender(initialValues.gender || '');
+      setAddress(initialValues.address || '');
+    }
+  }, [open, initialValues]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!firstname || !lastname || !email || !phone || !dob || !gender || !address) {
       alert('Please fill all fields');
       return;
     }
-    onSave({ firstname, lastname, email, phone, dob, gender, address });
-    setFirstName(''); setLastName(''); setEmail(''); setPhone(''); setDob(''); setGender(''); setAddress('');
+    onSave({ ...initialValues, firstname, lastname, email, phone, dob, gender, address });
+    if (mode === 'add') {
+      setFirstName(''); setLastName(''); setEmail(''); setPhone(''); setDob(''); setGender(''); setAddress('');
+    }
   };
 
   if (!open) return null;
@@ -25,7 +39,7 @@ export default function AddPatientModal({ open, onClose, onSave }) {
     <div className="modal fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 overflow-hidden">
         <div className="px-6 py-4 bg-blue-600">
-          <h3 className="text-lg font-medium text-white">Add New Patient</h3>
+          <h3 className="text-lg font-medium text-white">{mode === 'edit' ? 'Edit Patient' : 'Add New Patient'}</h3>
         </div>
         <form className="p-6" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -68,7 +82,7 @@ export default function AddPatientModal({ open, onClose, onSave }) {
               Cancel
             </button>
             <button type="submit" className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-              Save Patient
+              {mode === 'edit' ? 'Save Changes' : 'Save Patient'}
             </button>
           </div>
         </form>

@@ -116,6 +116,16 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
     setSelectedAppointment(null);
   }
 
+  function handleUpdatePatient(updatedPatient) {
+    setPatients(patients.map(p => p.id === updatedPatient.id ? updatedPatient : p));
+  }
+
+  async function handleDeletePatient(patientId) {
+    setPatients(patients.filter(p => p.id !== patientId));
+    setViewPatientOpen(false);
+    setSelectedPatient(null);
+  }
+
   return (
     <div className="dashboard-container min-h-screen bg-gray-50">
       {/* Navbar */}
@@ -269,6 +279,8 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
                 open={viewPatientOpen}
                 patient={selectedPatient}
                 onClose={handleCloseViewPatient}
+                onUpdatePatient={handleUpdatePatient}
+                onDeletePatient={handleDeletePatient}
               />
             </div>
           )}
