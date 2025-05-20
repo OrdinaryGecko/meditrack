@@ -74,10 +74,8 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
   async function handleAddPatient(data) {
     const newPatient = { ...data, id: getNextPatientId() };
     await addPatient(newPatient);
-    setPatients([
-      ...patients,
-      newPatient,
-    ]);
+    const patientsFromDb = await getAllPatients();
+    setPatients(patientsFromDb);
     setAddPatientOpen(false);
     broadcastChange('patient', { action: 'add', id: newPatient.id });
   }
@@ -95,10 +93,8 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
   async function handleAddDoctor(data) {
     const newDoctor = { ...data, id: getNextDoctorId() };
     await addDoctor(newDoctor);
-    setDoctors([
-      ...doctors,
-      newDoctor,
-    ]);
+    const doctorsFromDb = await getAllDoctors();
+    setDoctors(doctorsFromDb);
     setAddDoctorOpen(false);
     broadcastChange('doctor', { action: 'add', id: newDoctor.id });
   }
@@ -116,10 +112,8 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
   async function handleAddAppointment(data) {
     const newAppointment = { ...data, id: getNextAppointmentId() };
     await addAppointment(newAppointment);
-    setAppointments([
-      ...appointments,
-      newAppointment,
-    ]);
+    const appointmentsFromDb = await getAllAppointments();
+    setAppointments(appointmentsFromDb);
     setAddAppointmentOpen(false);
     broadcastChange('appointment', { action: 'add', id: newAppointment.id });
   }
@@ -136,7 +130,8 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
 
   async function handleUpdateDoctor(updatedDoctor) {
     await updateDoctor(updatedDoctor);
-    setDoctors(doctors.map(d => d.id === updatedDoctor.id ? updatedDoctor : d));
+    const doctorsFromDb = await getAllDoctors();
+    setDoctors(doctorsFromDb);
     broadcastChange('doctor', { action: 'update', id: updatedDoctor.id });
   }
 
@@ -150,7 +145,8 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
 
   async function handleUpdatePatient(updatedPatient) {
     await updatePatient(updatedPatient);
-    setPatients(patients.map(p => p.id === updatedPatient.id ? updatedPatient : p));
+    const patientsFromDb = await getAllPatients();
+    setPatients(patientsFromDb);
     broadcastChange('patient', { action: 'update', id: updatedPatient.id });
   }
 
@@ -164,7 +160,8 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
 
   async function handleUpdateAppointment(updatedAppointment) {
     await updateAppointment(updatedAppointment);
-    setAppointments(appointments.map(a => a.id === updatedAppointment.id ? updatedAppointment : a));
+    const appointmentsFromDb = await getAllAppointments();
+    setAppointments(appointmentsFromDb);
     broadcastChange('appointment', { action: 'update', id: updatedAppointment.id });
   }
 
