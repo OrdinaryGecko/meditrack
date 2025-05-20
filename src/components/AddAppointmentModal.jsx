@@ -34,6 +34,12 @@ export default function AddAppointmentModal({ open, onClose, onSave, patients, d
       alert('Please fill all fields');
       return;
     }
+    // Prevent past appointments
+    const selectedDateTime = new Date(date + 'T' + time);
+    if (selectedDateTime < new Date()) {
+      alert('Cannot create an appointment in the past.');
+      return;
+    }
     onSave({ ...initialValues, patientid, doctorid, date, time, type, notes });
     if (mode === 'add') {
       setPatientId(''); setDoctorId(''); setDate(''); setTime(''); setType(''); setNotes('');
