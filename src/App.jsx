@@ -7,6 +7,7 @@ import {
   getAllDoctors, addDoctor, updateDoctor, deleteDoctor,
   getAllAppointments, addAppointment, updateAppointment, deleteAppointment
 } from './db'
+import { broadcastChange, subscribeToChanges } from './sync';
 
 function App() {
   const [admins, setAdmins] = useState([])
@@ -16,12 +17,18 @@ function App() {
   const [appointments, setAppointments] = useState([])
   const [loading, setLoading] = useState(true)
 
-  const setCurrentAdmin = (admin) => {
+  const setCurrentAdmin = (admin, { suppressBroadcast } = {}) => {
     setCurrentAdminState(admin);
     if (admin) {
       localStorage.setItem('currentAdmin', JSON.stringify(admin));
+      if (!suppressBroadcast) {
+        broadcastChange('auth', { action: 'login', admin });
+      }
     } else {
       localStorage.removeItem('currentAdmin');
+      if (!suppressBroadcast) {
+        broadcastChange('auth', { action: 'logout' });
+      }
     }
   };
 
@@ -38,8 +45,19 @@ function App() {
       setAppointments(await getAllAppointments())
       setLoading(false)
     }
-    loadAll()
-  }, [])
+    loadAll();
+
+    const handleSync = (msg) => {
+      if (msg.type === 'auth') {
+        if (msg.payload?.action === 'logout') {
+          setCurrentAdmin(null, { suppressBroadcast: true });
+        } else if (msg.payload?.action === 'login' && msg.payload.admin) {
+          setCurrentAdmin(msg.payload.admin, { suppressBroadcast: true });
+        }
+      }
+    };
+    subscribeToChanges(handleSync);
+  }, []);
 
   const handleAddAdmin = async (admin) => {
     await addAdmin(admin)
