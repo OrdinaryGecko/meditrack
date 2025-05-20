@@ -11,15 +11,25 @@ export default function AddPatientModal({ open, onClose, onSave, initialValues =
 
   useEffect(() => {
     if (open) {
-      setFirstName(initialValues.firstname || '');
-      setLastName(initialValues.lastname || '');
-      setEmail(initialValues.email || '');
-      setPhone(initialValues.phone || '');
-      setDob(initialValues.dob || '');
-      setGender(initialValues.gender || '');
-      setAddress(initialValues.address || '');
+      if (mode === 'edit') {
+        setFirstName(initialValues.firstname || '');
+        setLastName(initialValues.lastname || '');
+        setEmail(initialValues.email || '');
+        setPhone(initialValues.phone || '');
+        setDob(initialValues.dob || '');
+        setGender(initialValues.gender || '');
+        setAddress(initialValues.address || '');
+      } else if (mode === 'add') {
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setPhone('');
+        setDob('');
+        setGender('');
+        setAddress('');
+      }
     }
-  }, [open, initialValues]);
+  }, [open, mode]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
