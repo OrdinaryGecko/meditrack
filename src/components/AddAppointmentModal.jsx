@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function AddAppointmentModal({ open, onClose, onSave, patients, doctors }) {
+export default function AddAppointmentModal({ open, onClose, onSave, patients, doctors, initialValues = {}, mode = 'add' }) {
   const [patientid, setPatientId] = useState('');
   const [doctorid, setDoctorId] = useState('');
   const [date, setDate] = useState('');
@@ -8,14 +8,36 @@ export default function AddAppointmentModal({ open, onClose, onSave, patients, d
   const [type, setType] = useState('');
   const [notes, setNotes] = useState('');
 
+  useEffect(() => {
+    if (open) {
+      if (mode === 'edit') {
+        setPatientId(initialValues.patientid || '');
+        setDoctorId(initialValues.doctorid || '');
+        setDate(initialValues.date || '');
+        setTime(initialValues.time || '');
+        setType(initialValues.type || '');
+        setNotes(initialValues.notes || '');
+      } else if (mode === 'add') {
+        setPatientId('');
+        setDoctorId('');
+        setDate('');
+        setTime('');
+        setType('');
+        setNotes('');
+      }
+    }
+  }, [open, mode]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!patientid || !doctorid || !date || !time || !type) {
       alert('Please fill all fields');
       return;
     }
-    onSave({ patientid, doctorid, date, time, type, notes });
-    setPatientId(''); setDoctorId(''); setDate(''); setTime(''); setType(''); setNotes('');
+    onSave({ ...initialValues, patientid, doctorid, date, time, type, notes });
+    if (mode === 'add') {
+      setPatientId(''); setDoctorId(''); setDate(''); setTime(''); setType(''); setNotes('');
+    }
   };
 
   if (!open) return null;
@@ -24,7 +46,7 @@ export default function AddAppointmentModal({ open, onClose, onSave, patients, d
     <div className="modal fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 overflow-hidden">
         <div className="px-6 py-4 bg-green-600">
-          <h3 className="text-lg font-medium text-white">Add New Appointment</h3>
+          <h3 className="text-lg font-medium text-white">{mode === 'edit' ? 'Edit Appointment' : 'Add New Appointment'}</h3>
         </div>
         <form className="p-6" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -93,7 +115,7 @@ export default function AddAppointmentModal({ open, onClose, onSave, patients, d
               Cancel
             </button>
             <button type="submit" className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-              Save Appointment
+              {mode === 'edit' ? 'Save Changes' : 'Save Appointment'}
             </button>
           </div>
         </form>
