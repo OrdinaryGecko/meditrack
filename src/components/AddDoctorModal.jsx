@@ -1,11 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function AddDoctorModal({ open, onClose, onSave }) {
+export default function AddDoctorModal({ open, onClose, onSave, initialValues = {}, mode = 'add' }) {
   const [firstname, setFirstName] = useState('');
   const [lastname, setLastName] = useState('');
   const [specialty, setSpecialty] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+
+  useEffect(() => {
+    if (open) {
+      if (mode === 'edit') {
+        setFirstName(initialValues.firstname || '');
+        setLastName(initialValues.lastname || '');
+        setSpecialty(initialValues.specialty || '');
+        setEmail(initialValues.email || '');
+        setPhone(initialValues.phone || '');
+      } else if (mode === 'add') {
+        setFirstName('');
+        setLastName('');
+        setSpecialty('');
+        setEmail('');
+        setPhone('');
+      }
+    }
+  }, [open, mode]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,8 +31,10 @@ export default function AddDoctorModal({ open, onClose, onSave }) {
       alert('Please fill all fields');
       return;
     }
-    onSave({ firstname, lastname, specialty, email, phone });
-    setFirstName(''); setLastName(''); setSpecialty(''); setEmail(''); setPhone('');
+    onSave({ ...initialValues, firstname, lastname, specialty, email, phone });
+    if (mode === 'add') {
+      setFirstName(''); setLastName(''); setSpecialty(''); setEmail(''); setPhone('');
+    }
   };
 
   if (!open) return null;
@@ -23,7 +43,7 @@ export default function AddDoctorModal({ open, onClose, onSave }) {
     <div className="modal fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 overflow-hidden">
         <div className="px-6 py-4 bg-purple-600">
-          <h3 className="text-lg font-medium text-white">Add New Doctor</h3>
+          <h3 className="text-lg font-medium text-white">{mode === 'edit' ? 'Edit Doctor' : 'Add New Doctor'}</h3>
         </div>
         <form className="p-6" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -53,7 +73,7 @@ export default function AddDoctorModal({ open, onClose, onSave }) {
               Cancel
             </button>
             <button type="submit" className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-              Save Doctor
+              {mode === 'edit' ? 'Save Changes' : 'Add New Doctor'}
             </button>
           </div>
         </form>
