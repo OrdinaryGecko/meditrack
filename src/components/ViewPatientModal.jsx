@@ -4,7 +4,11 @@ import AddPatientModal from './AddPatientModal';
 function formatDateTime(date, time) {
   if (!date) return '';
   const dt = new Date(date + 'T' + (time || '00:00'));
-  return dt.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+  // Format: Jun 15, 2023, 10:00 AM
+  return dt.toLocaleString(undefined, {
+    month: 'short', day: 'numeric', year: 'numeric',
+    hour: 'numeric', minute: '2-digit', hour12: true
+  });
 }
 
 export default function ViewPatientModal({ open, patient, onClose, onUpdatePatient, onDeletePatient, appointments = [], doctors = [] }) {
