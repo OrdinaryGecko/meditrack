@@ -57,6 +57,12 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
 
   const todaysAppointmentsCount = appointments.filter(a => a.date === getTodayString()).length;
 
+  const now = new Date();
+  const futureAppointments = appointments.filter(a => {
+    const dt = new Date(a.date + 'T' + (a.time || '00:00'));
+    return dt >= now;
+  });
+
   useEffect(() => {
     const handleSync = async (msg) => {
       const [patients, doctors, appointments] = await Promise.all([
@@ -237,9 +243,9 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-gray-500 truncate">Appointments</dt>
+                    <dt className="text-sm font-medium text-gray-500 truncate">Active Appointments</dt>
                     <dd>
-                      <div className="text-lg font-medium text-gray-900">{appointments.length}</div>
+                      <div className="text-lg font-medium text-gray-900">{futureAppointments.length}</div>
                     </dd>
                   </dl>
                 </div>
