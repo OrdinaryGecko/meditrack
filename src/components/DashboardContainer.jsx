@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PatientsTabContent from './PatientsTabContent';
 import AddPatientModal from './AddPatientModal';
 import ViewPatientModal from './ViewPatientModal';
@@ -8,7 +8,8 @@ import ViewDoctorModal from './ViewDoctorModal';
 import AppointmentsTabContent from './AppointmentsTabContent';
 import AddAppointmentModal from './AddAppointmentModal';
 import ViewAppointmentModal from './ViewAppointmentModal';
-import { addPatient, addDoctor, addAppointment, updateDoctor, deleteDoctor, updatePatient, deletePatient, updateAppointment, deleteAppointment } from '../db';
+import { addPatient, addDoctor, addAppointment, updateDoctor, deleteDoctor, updatePatient, deletePatient, updateAppointment, deleteAppointment, getAllPatients, getAllDoctors, getAllAppointments } from '../db';
+import { broadcastChange, subscribeToChanges } from '../sync';
 
 export default function DashboardContainer({ currentAdmin, setCurrentAdmin, patients, setPatients, doctors, setDoctors, appointments, setAppointments }) {
   const [activeTab, setActiveTab] = useState('doctors');
@@ -56,6 +57,20 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
 
   const todaysAppointmentsCount = appointments.filter(a => a.date === getTodayString()).length;
 
+  useEffect(() => {
+    const handleSync = async (msg) => {
+      const [patients, doctors, appointments] = await Promise.all([
+        getAllPatients(),
+        getAllDoctors(),
+        getAllAppointments(),
+      ]);
+      setPatients(patients);
+      setDoctors(doctors);
+      setAppointments(appointments);
+    };
+    subscribeToChanges(handleSync);
+  }, []);
+
   async function handleAddPatient(data) {
     const newPatient = { ...data, id: getNextPatientId() };
     await addPatient(newPatient);
@@ -64,6 +79,7 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
       newPatient,
     ]);
     setAddPatientOpen(false);
+    broadcastChange('patient', { action: 'add', id: newPatient.id });
   }
 
   function handleViewPatient(patient) {
@@ -84,6 +100,7 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
       newDoctor,
     ]);
     setAddDoctorOpen(false);
+    broadcastChange('doctor', { action: 'add', id: newDoctor.id });
   }
 
   function handleViewDoctor(doctor) {
@@ -104,6 +121,7 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
       newAppointment,
     ]);
     setAddAppointmentOpen(false);
+    broadcastChange('appointment', { action: 'add', id: newAppointment.id });
   }
 
   function handleViewAppointment(appointment) {
@@ -119,6 +137,7 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
   async function handleUpdateDoctor(updatedDoctor) {
     await updateDoctor(updatedDoctor);
     setDoctors(doctors.map(d => d.id === updatedDoctor.id ? updatedDoctor : d));
+    broadcastChange('doctor', { action: 'update', id: updatedDoctor.id });
   }
 
   async function handleDeleteDoctor(doctorId) {
@@ -126,11 +145,13 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
     setDoctors(doctors.filter(d => d.id !== doctorId));
     setViewDoctorOpen(false);
     setSelectedDoctor(null);
+    broadcastChange('doctor', { action: 'delete', id: doctorId });
   }
 
   async function handleUpdatePatient(updatedPatient) {
     await updatePatient(updatedPatient);
     setPatients(patients.map(p => p.id === updatedPatient.id ? updatedPatient : p));
+    broadcastChange('patient', { action: 'update', id: updatedPatient.id });
   }
 
   async function handleDeletePatient(patientId) {
@@ -138,11 +159,13 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
     setPatients(patients.filter(p => p.id !== patientId));
     setViewPatientOpen(false);
     setSelectedPatient(null);
+    broadcastChange('patient', { action: 'delete', id: patientId });
   }
 
   async function handleUpdateAppointment(updatedAppointment) {
     await updateAppointment(updatedAppointment);
     setAppointments(appointments.map(a => a.id === updatedAppointment.id ? updatedAppointment : a));
+    broadcastChange('appointment', { action: 'update', id: updatedAppointment.id });
   }
 
   async function handleDeleteAppointment(appointmentId) {
@@ -150,6 +173,7 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
     setAppointments(appointments.filter(a => a.id !== appointmentId));
     setViewAppointmentOpen(false);
     setSelectedAppointment(null);
+    broadcastChange('appointment', { action: 'delete', id: appointmentId });
   }
 
   return (
