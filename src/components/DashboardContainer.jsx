@@ -8,7 +8,7 @@ import ViewDoctorModal from './ViewDoctorModal';
 import AppointmentsTabContent from './AppointmentsTabContent';
 import AddAppointmentModal from './AddAppointmentModal';
 import ViewAppointmentModal from './ViewAppointmentModal';
-import { addPatient, addDoctor, addAppointment } from '../db';
+import { addPatient, addDoctor, addAppointment, updateDoctor, deleteDoctor, updatePatient, deletePatient, updateAppointment, deleteAppointment } from '../db';
 
 export default function DashboardContainer({ currentAdmin, setCurrentAdmin, patients, setPatients, doctors, setDoctors, appointments, setAppointments }) {
   const [activeTab, setActiveTab] = useState('doctors');
@@ -116,31 +116,37 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
     setSelectedAppointment(null);
   }
 
-  function handleUpdatePatient(updatedPatient) {
-    setPatients(patients.map(p => p.id === updatedPatient.id ? updatedPatient : p));
-  }
-
-  async function handleDeletePatient(patientId) {
-    setPatients(patients.filter(p => p.id !== patientId));
-    setViewPatientOpen(false);
-    setSelectedPatient(null);
-  }
-
-  function handleUpdateDoctor(updatedDoctor) {
+  async function handleUpdateDoctor(updatedDoctor) {
+    await updateDoctor(updatedDoctor);
     setDoctors(doctors.map(d => d.id === updatedDoctor.id ? updatedDoctor : d));
   }
 
   async function handleDeleteDoctor(doctorId) {
+    await deleteDoctor(doctorId);
     setDoctors(doctors.filter(d => d.id !== doctorId));
     setViewDoctorOpen(false);
     setSelectedDoctor(null);
   }
 
-  function handleUpdateAppointment(updatedAppointment) {
+  async function handleUpdatePatient(updatedPatient) {
+    await updatePatient(updatedPatient);
+    setPatients(patients.map(p => p.id === updatedPatient.id ? updatedPatient : p));
+  }
+
+  async function handleDeletePatient(patientId) {
+    await deletePatient(patientId);
+    setPatients(patients.filter(p => p.id !== patientId));
+    setViewPatientOpen(false);
+    setSelectedPatient(null);
+  }
+
+  async function handleUpdateAppointment(updatedAppointment) {
+    await updateAppointment(updatedAppointment);
     setAppointments(appointments.map(a => a.id === updatedAppointment.id ? updatedAppointment : a));
   }
 
   async function handleDeleteAppointment(appointmentId) {
+    await deleteAppointment(appointmentId);
     setAppointments(appointments.filter(a => a.id !== appointmentId));
     setViewAppointmentOpen(false);
     setSelectedAppointment(null);
