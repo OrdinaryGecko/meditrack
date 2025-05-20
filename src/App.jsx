@@ -10,13 +10,26 @@ import {
 
 function App() {
   const [admins, setAdmins] = useState([])
-  const [currentAdmin, setCurrentAdmin] = useState(null)
+  const [currentAdmin, setCurrentAdminState] = useState(null)
   const [patients, setPatients] = useState([])
   const [doctors, setDoctors] = useState([])
   const [appointments, setAppointments] = useState([])
   const [loading, setLoading] = useState(true)
 
+  const setCurrentAdmin = (admin) => {
+    setCurrentAdminState(admin);
+    if (admin) {
+      localStorage.setItem('currentAdmin', JSON.stringify(admin));
+    } else {
+      localStorage.removeItem('currentAdmin');
+    }
+  };
+
   useEffect(() => {
+    const savedAdmin = localStorage.getItem('currentAdmin');
+    if (savedAdmin) {
+      setCurrentAdminState(JSON.parse(savedAdmin));
+    }
     async function loadAll() {
       setLoading(true)
       setAdmins(await getAllAdmins())
