@@ -1,10 +1,37 @@
 import { useState } from 'react';
 import AddPatientModal from './AddPatientModal';
 
-export default function ViewPatientModal({ open, patient, onClose, onUpdatePatient, onDeletePatient }) {
+function formatDateTime(date, time) {
+  if (!date) return '';
+  const dt = new Date(date + 'T' + (time || '00:00'));
+  return dt.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+}
+
+export default function ViewPatientModal({ open, patient, onClose, onUpdatePatient, onDeletePatient, appointments = [], doctors = [] }) {
   const [editOpen, setEditOpen] = useState(false);
 
   if (!open || !patient) return null;
+
+  // Get top 3 most recent appointments for this patient
+  const recentAppointments = appointments
+    .filter(a => a.patientid === patient.id)
+    .sort((a, b) => (b.date + (b.time || '')).localeCompare(a.date + (a.time || '')))
+    .slice(0, 3);
+
+  const getDoctorName = (id) => {
+    const d = doctors.find(doc => doc.id === id);
+    return d ? `Dr. ${d.firstname} ${d.lastname}` : 'Unknown Doctor';
+  };
+
+  const typeColor = (type) => {
+    switch (type) {
+      case 'consultation': return 'bg-blue-100 text-blue-800';
+      case 'check-up': return 'bg-green-100 text-green-800';
+      case 'follow-up': return 'bg-yellow-100 text-yellow-800';
+      case 'emergency': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
 
   const handleEdit = () => setEditOpen(true);
   const handleEditClose = () => setEditOpen(false);
@@ -33,32 +60,58 @@ export default function ViewPatientModal({ open, patient, onClose, onUpdatePatie
           </div>
           <div className="p-6">
             <div className="mb-6">
-              <h4 className="text-xl font-medium text-gray-900">{patient.firstname} {patient.lastname}</h4>
-              <p className="text-sm text-gray-500">{patient.email}</p>
+              <h4 id="view-patient-name" className="text-xl font-medium text-gray-900">{patient.firstname} {patient.lastname}</h4>
+              <p id="view-patient-id" className="text-sm text-gray-500">Patient ID: {patient.id}</p>
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <p className="text-sm font-medium text-gray-500">Phone</p>
-                <p className="mt-1">{patient.phone}</p>
+                <p className="text-sm font-medium text-gray-500">Email</p>
+                <p id="view-patient-email" className="mt-1">{patient.email}</p>
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-500">DOB</p>
-                <p className="mt-1">{patient.dob}</p>
+                <p className="text-sm font-medium text-gray-500">Phone</p>
+                <p id="view-patient-phone" className="mt-1">{patient.phone}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-500">Date of Birth</p>
+                <p id="view-patient-dob" className="mt-1">{patient.dob}</p>
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-500">Gender</p>
-                <p className="mt-1">{patient.gender}</p>
+                <p id="view-patient-gender" className="mt-1">{patient.gender}</p>
               </div>
-              <div>
+              <div className="sm:col-span-2">
                 <p className="text-sm font-medium text-gray-500">Address</p>
-                <p className="mt-1">{patient.address}</p>
+                <p id="view-patient-address" className="mt-1">{patient.address}</p>
               </div>
             </div>
+            {/* Recent Appointments Section */}
+            <div className="mt-6 border-t border-gray-200 pt-4">
+              <h5 className="font-medium text-gray-900 mb-2">Recent Appointments</h5>
+              <ul id="view-patient-appointments" className="divide-y divide-gray-200">
+                {recentAppointments.length === 0 && (
+                  <li className="py-3 text-sm text-gray-500">No recent appointments.</li>
+                )}
+                {recentAppointments.map((appt) => (
+                  <li className="py-3" key={appt.id}>
+                    <div className="flex justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">{formatDateTime(appt.date, appt.time)}</p>
+                        <p className="text-sm text-gray-500">With {getDoctorName(appt.doctorid)}</p>
+                      </div>
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${typeColor(appt.type)}`}>
+                        {appt.type?.charAt(0).toUpperCase() + appt.type?.slice(1)}
+                      </span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
             <div className="mt-6 flex justify-end space-x-3">
-              <button className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onClick={handleEdit}>
+              <button id="edit-patient-btn" className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onClick={handleEdit}>
                 Edit
               </button>
-              <button className="px-4 py-2 border border-red-500 text-red-600 rounded-md text-sm font-medium hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" onClick={handleDelete}>
+              <button id="delete-patient-btn" className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" onClick={handleDelete}>
                 Delete
               </button>
             </div>

@@ -328,6 +328,8 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
                 onClose={handleCloseViewPatient}
                 onUpdatePatient={handleUpdatePatient}
                 onDeletePatient={handleDeletePatient}
+                appointments={appointments}
+                doctors={doctors}
               />
             </div>
           )}
