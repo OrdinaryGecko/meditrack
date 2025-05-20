@@ -364,6 +364,7 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
             <div className="tab-content active">
               <DoctorsTabContent
                 doctors={doctors}
+                appointments={appointments}
                 onAddDoctor={() => setAddDoctorOpen(true)}
                 onViewDoctor={handleViewDoctor}
               />

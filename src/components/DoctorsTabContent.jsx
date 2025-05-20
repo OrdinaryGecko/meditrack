@@ -1,4 +1,4 @@
-export default function DoctorsTabContent({ doctors, onAddDoctor, onViewDoctor }) {
+export default function DoctorsTabContent({ doctors, appointments = [], onAddDoctor, onViewDoctor }) {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
@@ -34,7 +34,7 @@ export default function DoctorsTabContent({ doctors, onAddDoctor, onViewDoctor }
                 <div className="mt-4 border-t border-gray-200 pt-4">
                   <div className="flex items-center justify-between">
                     <div className="text-sm text-gray-500">
-                      {/* Appointments count can be added here later */}
+                      {appointments.filter(a => a.doctorid === doctor.id).length} appointment{appointments.filter(a => a.doctorid === doctor.id).length === 1 ? '' : 's'}
                     </div>
                     <button
                       className="view-doctor-btn inline-flex items-center px-3 py-1 border border-transparent text-sm font-medium rounded-md text-purple-700 bg-purple-100 hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
