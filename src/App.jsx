@@ -104,7 +104,19 @@ function App() {
   }
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center text-gray-500">Loading...</div>
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="flex flex-col items-center">
+          <img
+            src="/meditrack-logo.svg"
+            alt="MediTrack Logo"
+            className="w-20 h-20 animate-bounce mb-4"
+          />
+          <span className="text-blue-700 text-xl font-semibold tracking-wide">MediTrack</span>
+          <span className="text-gray-400 mt-2">Loading...</span>
+        </div>
+      </div>
+    );
   }
 
   return (
