@@ -1,0 +1,12 @@
+steps:
+  - name: build-and-deploy
+    image: docker:cli
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker build -t meditrack:latest .
+      - docker stop meditrack || true
+      - docker rm meditrack || true
+      - docker run -d --name meditrack -p 8080:80 meditrack:latest
+    when:
+      branch: master
