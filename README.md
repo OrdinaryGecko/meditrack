@@ -1,12 +1,73 @@
-# React + Vite
+# MediTrack
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, browser-based patient management system built with Vite, React, Tailwind CSS, and PGlite (PostgreSQL in the browser).
 
-Currently, two official plugins are available:
+Supports admins, patients, doctors, appointments, authentication, and real-time multi-tab sync.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🔗 Live Preview
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+[meditrack.geckodev.xyz](https://meditrack.geckodev.xyz)
+
+---
+
+## 🚀 Features
+- Admin, patient, doctor, and appointment management (CRUD)
+- Persistent storage in the browser (PGlite)
+- Real-time UI updates and multi-tab sync
+- Authentication with session persistence
+- Responsive, modern UI with Tailwind CSS
+- Dockerized for easy deployment
+- CI/CD ready (Woodpecker pipeline example included)
+
+## 🛠️ Setup (Development)
+
+1. **Clone the repository**
+   ```bash
+   git clone <repo-url>
+   cd meditrack
+   ```
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+3. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+   The app will be available at [http://localhost:5173](http://localhost:5173) (or the port shown in your terminal).
+
+## 🐳 Docker (Production)
+
+1. **Build the Docker image**
+   ```bash
+   docker build -t meditrack .
+   ```
+2. **Run the Docker container**
+   ```bash
+   docker run -d -p 8080:80 meditrack
+   ```
+   The app will be available at [http://localhost:8080](http://localhost:8080)
+
+## ⚙️ Configuration
+
+- **Environment variables:**
+  - No special environment variables are required for local development.
+  - For CI/CD or deployment, see `.woodpecker.yml` and `Dockerfile`.
+- **Database:**
+  - Uses PGlite (PostgreSQL in the browser) for persistent storage. No external DB setup required.
+
+## 🧑‍💻 Usage
+
+- Open the app in your browser.
+- Register a new admin or log in with an existing admin account.
+- Manage patients, doctors, and appointments from the dashboard.
+- All changes are persisted in the browser and synced across tabs.
+
+## 📝 Scripts
+
+- `npm run dev` — Start development server
+- `npm run build` — Build for production
+- `npm run preview` — Preview production build
+- `npm run lint` — Lint the codebase
