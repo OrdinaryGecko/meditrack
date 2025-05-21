@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 export default function AuthContainer({ admins, setCurrentAdmin, onAddAdmin }) {
   const [tab, setTab] = useState('login');
-  const [loginEmail, setLoginEmail] = useState('admin@example.com');
+  const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [registerName, setRegisterName] = useState('');
   const [registerEmail, setRegisterEmail] = useState('');
