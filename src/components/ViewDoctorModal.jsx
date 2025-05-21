@@ -68,14 +68,14 @@ export default function ViewDoctorModal({ open, doctor, onClose, onUpdateDoctor,
               <h4 id="view-doctor-name" className="text-xl font-medium text-gray-900">Dr. {doctor.firstname} {doctor.lastname}</h4>
               <p id="view-doctor-specialty" className="text-sm text-gray-500">{doctor.specialty}</p>
             </div>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mb-4">
               <div className="sm:col-span-1">
                 <p className="text-sm font-medium text-gray-500">Email</p>
-                <p id="view-doctor-email" className="mt-1">{doctor.email}</p>
+                <p id="view-doctor-email" className="mt-1 break-all">{doctor.email}</p>
               </div>
               <div className="sm:col-span-1">
                 <p className="text-sm font-medium text-gray-500">Phone</p>
-                <p id="view-doctor-phone" className="mt-1">{doctor.phone}</p>
+                <p id="view-doctor-phone" className="mt-1 break-all">{doctor.phone}</p>
               </div>
             </div>
             {/* Upcoming Appointments Section */}
