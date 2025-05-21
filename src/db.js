@@ -1,10 +1,15 @@
-import { PGliteWorker } from '@electric-sql/pglite/worker';
+import { PGliteWorker } from '@electric-sql/pglite/worker'
+import PGWorker from './my-pglite-worker.js?worker'
 
-// Initialize the database
-const db = new PGliteWorker(
-  new Worker(new URL('./my-pglite-worker.js', import.meta.url), { type: 'module' }),
-  { dataDir: 'idb://meditrack' }
-);
+export const db = new PGliteWorker(
+  new PGWorker({
+    type: 'module',
+    name: 'pglite-worker',
+  }),
+  {
+    dataDir: 'idb://meditrack'
+  }
+)
 
 // Table creation SQL
 const tableSQL = [
