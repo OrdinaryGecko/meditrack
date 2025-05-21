@@ -55,13 +55,18 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
     return today.toISOString().slice(0, 10);
   }
 
-  const todaysAppointmentsCount = appointments.filter(a => a.date === getTodayString()).length;
-
   const now = new Date();
   const futureAppointments = appointments.filter(a => {
     const dt = new Date(a.date + 'T' + (a.time || '00:00'));
     return dt >= now;
   });
+
+  const todayStr = getTodayString();
+  const todaysActiveAppointmentsCount = appointments.filter(a => {
+    if (a.date !== todayStr) return false;
+    const dt = new Date(a.date + 'T' + (a.time || '00:00'));
+    return dt >= now;
+  }).length;
 
   useEffect(() => {
     const handleSync = async (msg) => {
@@ -281,9 +286,9 @@ export default function DashboardContainer({ currentAdmin, setCurrentAdmin, pati
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-gray-500 truncate">Today's Appointments</dt>
+                    <dt className="text-sm font-medium text-gray-500 truncate">Today's Active Appointments</dt>
                     <dd>
-                      <div className="text-lg font-medium text-gray-900">{todaysAppointmentsCount}</div>
+                      <div className="text-lg font-medium text-gray-900">{todaysActiveAppointmentsCount}</div>
                     </dd>
                   </dl>
                 </div>
