@@ -57,11 +57,31 @@ export default function ViewAppointmentModal({ open, appointment, patients, doct
             <div className="grid grid-cols-1 gap-4">
               <div>
                 <p className="text-sm font-medium text-gray-500">Patient</p>
-                <p className="mt-1">{getPatientName(patients, appointment.patientid)}</p>
+                <p className="mt-1 flex items-center">
+                  {getPatientName(patients, appointment.patientid)}
+                  {getPatientName(patients, appointment.patientid) === "Unknown Patient" && (
+                    <span className="ml-2 text-yellow-600 cursor-pointer group relative" title="Patient not found. Please assign a new patient or cancel the appointment.">
+                      ⚠️
+                      <span className="hidden group-hover:flex absolute left-0 top-6 bg-yellow-100 text-yellow-800 text-xs rounded px-3 py-1 z-10 whitespace-normal min-w-[220px] max-w-sm shadow-lg border border-yellow-300">
+                        Patient not found. Please assign a new patient or cancel the appointment.
+                      </span>
+                    </span>
+                  )}
+                </p>
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-500">Doctor</p>
-                <p className="mt-1">{getDoctorName(doctors, appointment.doctorid)}</p>
+                <p className="mt-1 flex items-center">
+                  {getDoctorName(doctors, appointment.doctorid)}
+                  {getDoctorName(doctors, appointment.doctorid) === "Unknown Doctor" && (
+                    <span className="ml-2 text-yellow-600 cursor-pointer group relative" title="Doctor not found. Please assign a new doctor or cancel the appointment.">
+                      ⚠️
+                      <span className="hidden group-hover:flex absolute left-0 top-6 bg-yellow-100 text-yellow-800 text-xs rounded px-3 py-1 z-10 whitespace-normal min-w-[220px] max-w-sm shadow-lg border border-yellow-300">
+                        Doctor not found. Please assign a new doctor or cancel the appointment.
+                      </span>
+                    </span>
+                  )}
+                </p>
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-500">Notes</p>
