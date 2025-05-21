@@ -11,7 +11,8 @@ function getDoctorName(doctors, id) {
 }
 function formatDate(date) {
   if (!date) return '';
-  return new Date(date).toLocaleDateString();
+  const d = new Date(date);
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 function formatTime(time) {
   if (!time) return '';
