@@ -69,11 +69,11 @@ export default function ViewDoctorModal({ open, doctor, onClose, onUpdateDoctor,
               <p id="view-doctor-specialty" className="text-sm text-gray-500">{doctor.specialty}</p>
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div>
+              <div className="sm:col-span-1">
                 <p className="text-sm font-medium text-gray-500">Email</p>
                 <p id="view-doctor-email" className="mt-1">{doctor.email}</p>
               </div>
-              <div>
+              <div className="sm:col-span-1">
                 <p className="text-sm font-medium text-gray-500">Phone</p>
                 <p id="view-doctor-phone" className="mt-1">{doctor.phone}</p>
               </div>

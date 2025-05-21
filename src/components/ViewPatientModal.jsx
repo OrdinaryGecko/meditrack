@@ -68,11 +68,11 @@ export default function ViewPatientModal({ open, patient, onClose, onUpdatePatie
               <p id="view-patient-id" className="text-sm text-gray-500">Patient ID: {patient.id}</p>
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div>
+              <div className="sm:col-span-1">
                 <p className="text-sm font-medium text-gray-500">Email</p>
                 <p id="view-patient-email" className="mt-1">{patient.email}</p>
               </div>
-              <div>
+              <div className="sm:col-span-1">
                 <p className="text-sm font-medium text-gray-500">Phone</p>
                 <p id="view-patient-phone" className="mt-1">{patient.phone}</p>
               </div>
