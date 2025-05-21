@@ -1,5 +1,14 @@
 steps:
-  - name: test
-    image: alpine
+  - name: build-and-deploy
+    image: docker:cli
+    privileged: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - echo "Hello from Woodpecker"
+      - docker build -t meditrack:latest .
+      - docker stop meditrack || true
+      - docker rm meditrack || true
+      - docker run -d --name meditrack -p 8080:80 meditrack:latest
+
+when:
+  branch: master
