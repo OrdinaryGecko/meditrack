@@ -28,6 +28,7 @@ services:
       WOODPECKER_AGENT_SECRET: ${WOODPECKER_AGENT_SECRET}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    privileged: true
 
 volumes:
   woodpecker-server-data:
