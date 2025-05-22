@@ -25,7 +25,7 @@ Supports admins, patients, doctors, appointments, authentication, and real-time 
 
 1. **Clone the repository**
    ```bash
-   git clone <repo-url>
+   git clone https://git.geckodev.xyz/ordinarygecko/meditrack.git
    cd meditrack
    ```
 2. **Install dependencies**
